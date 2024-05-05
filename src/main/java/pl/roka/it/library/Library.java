@@ -1,6 +1,7 @@
 package pl.roka.it.library;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -69,6 +70,13 @@ public class Library {
         System.out.println("Книга с ID " + editedBook.getId() + " не найдена в библиотеке.");
     }
 
+    public Book getBook(Book book) throws IllegalArgumentException {
+        if(!books.contains(book)) {
+            throw new IllegalArgumentException("Такой книги нету!!!");
+        }
+        return books.get(books.indexOf(book));
+    }
+
     @Override
     public String toString() {
         return "Library{" +
@@ -76,3 +84,5 @@ public class Library {
                 '}';
     }
 }
+
+

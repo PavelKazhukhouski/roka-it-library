@@ -40,7 +40,8 @@ public class LibraryApplication {
     private final Scanner scanner = new Scanner(System.in);
     private final Library library = new Library();
 
-    public void start() {
+    public void applicationStart() {
+
         while (true) {
             System.out.println("Выберите действие:");
             System.out.println("1. Вывод всех книг");

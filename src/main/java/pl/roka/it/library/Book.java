@@ -1,5 +1,8 @@
 package pl.roka.it.library;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Создать класс Книга, поля:
  * • id (целое число).
@@ -13,6 +16,7 @@ public class Book {
     private int id;
     private String title;
     private Genre genre;
+    private final Lock lock = new ReentrantLock();
 
     public Book(int id, String title, Genre genre) {
         this.id = id;
@@ -42,6 +46,10 @@ public class Book {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 
     @Override
