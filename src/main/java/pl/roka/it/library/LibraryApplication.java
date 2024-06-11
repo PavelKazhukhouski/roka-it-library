@@ -57,7 +57,7 @@ public class LibraryApplication {
                     System.out.println("Введите Id Книги");
                     library.removeBook(intReader());
                 }
-                case 4 -> editingABookInTheLibrary();
+                case 4 -> editInLibrary();
                 case 5 -> System.exit(0);
             }
         }
@@ -70,9 +70,10 @@ public class LibraryApplication {
         }
         return scanner.nextInt();
     }
+
     public Genre genreReader() {
         while (true) {
-            System.out.println("Выберете номер нужного жанра: ");
+            System.out.println("Выберете Id нужного жанра: ");
             for (int i = 0; i < Genre.values().length; i++) {
                 System.out.println(i + ". " + Genre.values()[i]);
             }
@@ -80,7 +81,7 @@ public class LibraryApplication {
             if (numberOfMenu >= 0 && numberOfMenu < Genre.values().length) {
                 return Genre.values()[numberOfMenu];
             }
-            System.out.println("Не правильный номер. Попробуйте еще раз.");
+            System.out.println("Не правильный ID. Попробуйте еще раз.");
         }
     }
 
@@ -150,7 +151,7 @@ public class LibraryApplication {
      * ▪ создаем объект книги (поля заполняются данными введенными пользователем)
      * ▪ редактируем книгу в библиотеке
      */
-    public void editingABookInTheLibrary() {
+    public void editInLibrary() {
         int id;
         String title;
         Genre genre;

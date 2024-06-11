@@ -12,40 +12,53 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Reader extends Thread {
-    Random random = new Random();
+    private Random random = new Random();
     private Library library;
-    Book book;
-    public Reader(Library library, Book book, String name) {
+    private String title;
+    private Book book;
+
+    public Reader(Library library, String title, String name) {
         this.library = library;
-        this.book = book;
+        this.title = title;
         this.setName(name);
         this.start();
     }
 
     @Override
     public void run() {
-        try {
-            if (library.getBook(book).getLock().tryLock(5, TimeUnit.SECONDS)) {
-                try {
-                    System.out.println(Thread.currentThread().getName() + " Читает " + book);
-
-                    Thread.sleep(random.nextInt(10) * 1000);
-
-                    System.out.println(Thread.currentThread().getName() + " Дочитал " + book);
-
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    library.getBook(book).getLock().unlock();
-                }
-
-            } else {
-                System.out.println("Ушел домой.");
+        String threadName = Thread.currentThread().getName();
+        book = takeBook(title, 2000);
+        if (book != null) {
+            try {
+                System.out.println(threadName + " is reading " + book.getTitle());
+                Thread.sleep(random.nextInt(5) * 1000 + 1000);
+                library.addBook(book);
+                System.out.println(threadName + " finished reading");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } else {
+            System.out.println(threadName + " Got out");
         }
+
     }
+
+    public Book takeBook(String title, long timeOut) {
+        long endTime = System.currentTimeMillis() + timeOut;
+        while (System.currentTimeMillis() < endTime) {
+            book = library.getBook(title);
+            if (book != null && library.removeBook(book.getId())) {
+                System.out.println(Thread.currentThread().getName() + " took " + book.getTitle());
+                return book;
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+
 }
 

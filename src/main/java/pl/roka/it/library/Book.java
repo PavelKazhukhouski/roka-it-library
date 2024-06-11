@@ -1,5 +1,6 @@
 package pl.roka.it.library;
 
+import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,7 +17,6 @@ public class Book {
     private int id;
     private String title;
     private Genre genre;
-    private final Lock lock = new ReentrantLock();
 
     public Book(int id, String title, Genre genre) {
         this.id = id;
@@ -48,9 +48,6 @@ public class Book {
         this.genre = genre;
     }
 
-    public Lock getLock() {
-        return lock;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,7 +61,7 @@ public class Book {
 
     @Override
     public int hashCode() {
-        return id;
+        return Objects.hash(id, title, genre.hashCode());
     }
 
     @Override

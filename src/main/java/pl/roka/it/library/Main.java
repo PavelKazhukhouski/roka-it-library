@@ -1,9 +1,7 @@
 package pl.roka.it.library;
 
-import com.sun.jdi.event.ThreadDeathEvent;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -23,13 +21,13 @@ public class Main {
     public static void main(String[] args) {
         Random random = new Random();
 
-        String[] title = {"Война и мир", "Звук и ярость", "Человек невидимка", "Илиада", "Одиссея",
+        String[] titles = {"Война и мир", "Звук и ярость", "Человек невидимка", "Илиада", "Одиссея",
                 "Гордость и предубеждение", "Божественная комедия"};
 
         Library library = new Library();
 
-        for (int i = 0; i < 5; i++) {
-            library.addBook(new Book(i, title[i], Genre.values()[i]));
+        for (int i = 0; i < 3; i++) {
+            library.addBook(new Book(i, titles[i], Genre.values()[i]));
         }
         System.out.println(library);
         System.out.println();
@@ -37,9 +35,13 @@ public class Main {
 
         String[] readers = {"Вася", "Валера", "Света", "Коля", "Марина", "Егор", "Зина", "Галя", "Кеша", "Лида"};
 
-        for (int i = 0; i < 7; i++) {
-            new Reader(library, library.getAllBooks().get(random.nextInt(5)), readers[i]);
+        for (int i = 0; i < 3; i++) {
+            new Reader(library, titles[i], readers[i]);
         }
+        for (int i = 0; i < 3; i++) {
+            new Reader(library, titles[i], readers[i + 3]);
+        }
+
 
     }
 

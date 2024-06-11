@@ -1,9 +1,8 @@
 package pl.roka.it.library;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Создать класс Библиотека.
@@ -16,7 +15,7 @@ public class Library {
     private final List<Book> books;
 
     public Library() {
-        books = new ArrayList<>();
+        books = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -28,7 +27,7 @@ public class Library {
             System.out.println("Книга с таким ID уже существует в библиотеке.");
         } else {
             books.add(book);
-            System.out.println("Книга добавлена в библиотеку.");
+            System.out.println("Книга добавлена");
         }
 
     }
@@ -37,24 +36,21 @@ public class Library {
      * Получить все книги (метод ВОЗВРАЩАЕТ список всех книг в библиотеке).
      */
     public List<Book> getAllBooks() {
-        return new ArrayList<>(books);
+        return books;
     }
 
     /**
      * Удалить книгу (метод принимает id книги и удаляет из списка книгу с соответствующим id). ?????
      */
-    public void removeBook(int id) {
+    public boolean removeBook(int id) {
         ListIterator<Book> iterator = books.listIterator();
         while (iterator.hasNext()) {
             Book book = iterator.next();
             if (book.getId() == id) {
-                iterator.remove();
-                System.out.println("Книга с ID " + book.getId() + " - " +
-                        "\"" + book.getTitle() + "\"" + " удалена из библиотеки.");
-                return;
+                return books.remove(book);
             }
         }
-        System.out.println("Книга с ID " + id + " не найдена в библиотеке.");
+        return false;
     }
 
     /**
@@ -65,16 +61,20 @@ public class Library {
             books.set(books.indexOf(editedBook), editedBook);
             System.out.println("Книга с ID " + editedBook.getId() + " - " +
                     "\"" + editedBook.getTitle() + "\"" + " отредактирована.");
-            return;
+        } else {
+            System.out.println("Книга с ID " + editedBook.getId() + " не найдена в библиотеке.");
         }
-        System.out.println("Книга с ID " + editedBook.getId() + " не найдена в библиотеке.");
+
     }
 
-    public Book getBook(Book book) throws IllegalArgumentException {
-        if(!books.contains(book)) {
-            throw new IllegalArgumentException("Такой книги нету!!!");
+    public Book getBook(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
         }
-        return books.get(books.indexOf(book));
+        return null;
+
     }
 
     @Override

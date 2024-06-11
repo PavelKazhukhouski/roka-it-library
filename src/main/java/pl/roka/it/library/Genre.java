@@ -20,6 +20,15 @@ public enum Genre {
         this.id = id;
     }
 
+    public static Genre genreByID(int id) {
+        for (Genre genre : Genre.values()) {
+            if (genre.id == id) {
+                return genre;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Id");
+    }
+
     public int getGenreId() {
         return id;
     }
